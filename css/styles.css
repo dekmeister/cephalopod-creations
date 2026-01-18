@@ -46,6 +46,28 @@ body {
     height: auto;
 }
 
+/* Mobile: Make cuttlefish fill the width and be easily interactable */
+@media (max-width: 768px) {
+    body {
+        overflow: auto;
+        height: auto;
+        min-height: 100vh;
+    }
+
+    #cuttlefish-container {
+        padding: 10px 0;
+        height: auto;
+        min-height: 100vh;
+    }
+
+    #cuttlefish-container svg {
+        width: 100vw !important;
+        height: auto !important;
+        max-width: 100vw !important;
+        max-height: none !important;
+    }
+}
+
 /* Tentacle Styles (filled tapered shapes) */
 .tentacle {
     cursor: pointer;
@@ -75,6 +97,14 @@ body {
     cursor: pointer;
     user-select: none;
     transition: fill var(--transition-speed) ease;
+}
+
+/* Mobile: Larger, more readable labels */
+@media (max-width: 768px) {
+    .tentacle-label {
+        font-size: 18px;
+        font-weight: 600;
+    }
 }
 
 .tentacle-label:hover,
@@ -155,6 +185,17 @@ body {
     z-index: 100;
 }
 
+/* Mobile: Larger touch target for toggle button */
+@media (max-width: 768px) {
+    .toggle-button {
+        width: 60px;
+        height: 60px;
+        font-size: 24px;
+        bottom: 15px;
+        right: 15px;
+    }
+}
+
 .toggle-button:hover {
     transform: scale(1.1);
     border-color: var(--glow-color);
@@ -196,6 +237,18 @@ body {
     position: relative;
     transform: scale(0.9);
     transition: transform var(--transition-speed) ease;
+}
+
+/* Mobile: Fixed modal sizing that works even when zoomed */
+@media (max-width: 768px) {
+    .modal-content {
+        width: calc(100% - 40px);
+        max-width: none;
+        margin: 20px;
+        padding: 25px;
+        max-height: calc(100vh - 40px);
+        overflow-y: auto;
+    }
 }
 
 .modal-overlay:not([hidden]) .modal-content {
@@ -240,6 +293,34 @@ body {
     text-decoration: none;
     border-radius: 6px;
     transition: background var(--transition-speed) ease, transform var(--transition-speed) ease;
+}
+
+/* Mobile: Larger, more readable modal text and touch-friendly buttons */
+@media (max-width: 768px) {
+    .modal-title {
+        font-size: 28px;
+        margin-bottom: 20px;
+    }
+
+    .modal-description {
+        font-size: 18px;
+        line-height: 1.7;
+        margin-bottom: 25px;
+    }
+
+    .modal-link {
+        padding: 15px 30px;
+        font-size: 18px;
+        width: 100%;
+        text-align: center;
+    }
+
+    .modal-close {
+        font-size: 40px;
+        padding: 10px 15px;
+        top: 5px;
+        right: 5px;
+    }
 }
 
 .modal-link:hover {

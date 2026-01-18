@@ -5,6 +5,13 @@ const SVG_HEIGHT = 600;
 const BODY_CENTER_X = 400;
 const BODY_CENTER_Y = 200;
 
+// Mobile-optimized viewBox: crop to actual cuttlefish content area
+// Content bounds: X ~250-550, Y ~50-570 (including labels below tentacles)
+const MOBILE_VIEWBOX_X = 200;
+const MOBILE_VIEWBOX_Y = 30;
+const MOBILE_VIEWBOX_WIDTH = 400;
+const MOBILE_VIEWBOX_HEIGHT = 560;
+
 /**
  * Generate the undulating mantle fin that wraps around the entire body
  */
@@ -282,6 +289,7 @@ function generateFeedingTentacles(sites) {
 
 /**
  * Generate a label for a tentacle
+ * Wraps long text into multiple lines for compact display
  */
 function generateLabel(tentacle) {
     const { endX, endY, angle, title, id } = tentacle;
@@ -296,6 +304,30 @@ function generateLabel(tentacle) {
     const textAnchor = Math.abs(angle) < 0.2 ? 'middle' :
                       (angle < 0 ? 'end' : 'start');
 
+    // Split title into words and wrap if too long
+    const maxCharsPerLine = 10; // Compact for mobile
+    const words = title.split(' ');
+    const lines = [];
+    let currentLine = '';
+
+    words.forEach(word => {
+        const testLine = currentLine ? `${currentLine} ${word}` : word;
+        if (testLine.length > maxCharsPerLine && currentLine) {
+            lines.push(currentLine);
+            currentLine = word;
+        } else {
+            currentLine = testLine;
+        }
+    });
+    if (currentLine) lines.push(currentLine);
+
+    // Generate tspan elements for each line
+    const lineHeight = 18; // Match font size on mobile
+    const tspans = lines.map((line, i) => {
+        const dy = i === 0 ? 0 : lineHeight;
+        return `<tspan x="${labelX}" dy="${dy}">${line}</tspan>`;
+    }).join('\n            ');
+
     return `
         <text id="label-${id}"
               x="${labelX}" y="${labelY}"
@@ -306,7 +338,7 @@ function generateLabel(tentacle) {
               tabindex="0"
               role="button"
               aria-label="View ${title}">
-            ${title}
+            ${tspans}
         </text>
     `;
 }
@@ -340,8 +372,14 @@ export function generateCuttlefish(container, sites) {
     const labels = allTentacles.map(t => generateLabel(t));
     
     // Assemble complete SVG
+    // On mobile, use a cropped viewBox that focuses on the cuttlefish content
+    const isMobile = window.innerWidth <= 768;
+    const viewBox = isMobile
+        ? `${MOBILE_VIEWBOX_X} ${MOBILE_VIEWBOX_Y} ${MOBILE_VIEWBOX_WIDTH} ${MOBILE_VIEWBOX_HEIGHT}`
+        : `0 0 ${SVG_WIDTH} ${SVG_HEIGHT}`;
+
     const svg = `
-        <svg viewBox="0 0 ${SVG_WIDTH} ${SVG_HEIGHT}"
+        <svg viewBox="${viewBox}"
              preserveAspectRatio="xMidYMid meet"
              xmlns="http://www.w3.org/2000/svg"
              role="img"
