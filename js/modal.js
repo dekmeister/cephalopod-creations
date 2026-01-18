@@ -1,5 +1,7 @@
 // Modal open/close/populate logic
 
+import { pauseJSAnimations, resumeJSAnimations } from './animation.js';
+
 let modalElement = null;
 let modalTitle = null;
 let modalDescription = null;
@@ -49,10 +51,11 @@ export function openModal(siteData) {
     // Show modal
     modalElement.removeAttribute('hidden');
 
-    // Pause animations
+    // Pause animations (CSS and JS)
     if (cuttlefishContainer) {
         cuttlefishContainer.classList.add('animation-paused');
     }
+    pauseJSAnimations();
 
     // Add focus trap listener
     document.addEventListener('keydown', trapFocus);
@@ -70,10 +73,11 @@ export function closeModal() {
     // Hide modal
     modalElement.setAttribute('hidden', '');
 
-    // Resume animations
+    // Resume animations (CSS and JS)
     if (cuttlefishContainer) {
         cuttlefishContainer.classList.remove('animation-paused');
     }
+    resumeJSAnimations();
 
     // Remove focus trap listener
     document.removeEventListener('keydown', trapFocus);

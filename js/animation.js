@@ -1,7 +1,11 @@
 // Tentacle animation and colour shifting controls
 
+import { generateMantleFin } from './cuttlefish.js';
+
 let animationEnabled = true;
 let colourShiftInterval = null;
+let finAnimationInterval = null;
+let finPhase = 0;
 let toggleButton = null;
 
 /**
@@ -31,6 +35,43 @@ function stopColourShift() {
 }
 
 /**
+ * Animate the fin by updating its wave phase
+ */
+function animateFin() {
+    finPhase += 0.15;
+
+    const fin = document.querySelector('.cuttlefish-fin');
+    if (!fin) return;
+
+    // Generate new path data with updated phase
+    const tempDiv = document.createElement('div');
+    tempDiv.innerHTML = generateMantleFin(finPhase);
+    const newPath = tempDiv.querySelector('path');
+
+    if (newPath) {
+        fin.setAttribute('d', newPath.getAttribute('d'));
+    }
+}
+
+/**
+ * Start fin animation
+ */
+function startFinAnimation() {
+    if (finAnimationInterval) return;
+    finAnimationInterval = setInterval(animateFin, 80);
+}
+
+/**
+ * Stop fin animation
+ */
+function stopFinAnimation() {
+    if (finAnimationInterval) {
+        clearInterval(finAnimationInterval);
+        finAnimationInterval = null;
+    }
+}
+
+/**
  * Toggle animations on/off
  */
 function toggleAnimations() {
@@ -40,6 +81,7 @@ function toggleAnimations() {
     if (animationEnabled) {
         container?.classList.remove('animations-disabled');
         startColourShift();
+        startFinAnimation();
         if (toggleButton) {
             toggleButton.innerHTML = '<span class="toggle-icon">⏸</span>';
             toggleButton.setAttribute('aria-label', 'Pause animations');
@@ -47,6 +89,7 @@ function toggleAnimations() {
     } else {
         container?.classList.add('animations-disabled');
         stopColourShift();
+        stopFinAnimation();
         if (toggleButton) {
             toggleButton.innerHTML = '<span class="toggle-icon">▶</span>';
             toggleButton.setAttribute('aria-label', 'Play animations');
@@ -75,6 +118,7 @@ export function initAnimation(enabled) {
     if (animationEnabled) {
         container?.classList.remove('animations-disabled');
         startColourShift();
+        startFinAnimation();
         toggleButton.innerHTML = '<span class="toggle-icon">⏸</span>';
         toggleButton.setAttribute('aria-label', 'Pause animations');
     } else {
@@ -92,8 +136,27 @@ export function initAnimation(enabled) {
         animationEnabled = false;
         container?.classList.add('animations-disabled');
         stopColourShift();
+        stopFinAnimation();
         console.log('Animations disabled due to prefers-reduced-motion');
     }
 
     console.log('Animation initialized. Enabled:', animationEnabled);
+}
+
+/**
+ * Pause JS-driven animations (for modal)
+ */
+export function pauseJSAnimations() {
+    stopColourShift();
+    stopFinAnimation();
+}
+
+/**
+ * Resume JS-driven animations (for modal)
+ */
+export function resumeJSAnimations() {
+    if (animationEnabled) {
+        startColourShift();
+        startFinAnimation();
+    }
 }

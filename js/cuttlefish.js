@@ -346,6 +346,8 @@ function generateLabel(tentacle) {
 /**
  * Main function to generate complete cuttlefish SVG
  */
+export { generateMantleFin };
+
 export function generateCuttlefish(container, sites) {
     if (!sites || sites.length === 0) {
         container.innerHTML = '<div class="error-message">No sites to display</div>';
