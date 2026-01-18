@@ -71,8 +71,21 @@ body {
     fill: var(--text-color);
     font-size: 14px;
     font-weight: 500;
-    pointer-events: none;
+    pointer-events: auto;
+    cursor: pointer;
     user-select: none;
+    transition: fill var(--transition-speed) ease;
+}
+
+.tentacle-label:hover,
+.tentacle-label:focus {
+    fill: var(--glow-color);
+    outline: none;
+}
+
+.tentacle-label:focus-visible {
+    outline: 2px solid var(--glow-color);
+    outline-offset: 4px;
 }
 
 /* Cuttlefish Body */

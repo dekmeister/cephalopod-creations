@@ -5,11 +5,13 @@ import { initModal, openModal } from './modal.js';
 import { initAnimation } from './animation.js';
 
 /**
- * Attach click handlers to tentacles
+ * Attach click handlers to tentacles and their labels
  */
 function attachTentacleHandlers(sites) {
     sites.forEach(site => {
         const tentacle = document.getElementById(`tentacle-${site.id}`);
+        const label = document.getElementById(`label-${site.id}`);
+
         if (!tentacle) {
             console.warn(`Tentacle not found for site: ${site.id}`);
             return;
@@ -21,14 +23,25 @@ function attachTentacleHandlers(sites) {
             openModal(site);
         };
 
-        // Mouse and keyboard events
-        tentacle.addEventListener('click', handleClick);
-        tentacle.addEventListener('keydown', (e) => {
+        // Keyboard handler
+        const handleKeydown = (e) => {
             if (e.key === 'Enter' || e.key === ' ') {
                 e.preventDefault();
                 handleClick(e);
             }
-        });
+        };
+
+        // Attach events to tentacle
+        tentacle.addEventListener('click', handleClick);
+        tentacle.addEventListener('keydown', handleKeydown);
+
+        // Attach events to label (if it exists)
+        if (label) {
+            label.addEventListener('click', handleClick);
+            label.addEventListener('keydown', handleKeydown);
+        } else {
+            console.warn(`Label not found for site: ${site.id}`);
+        }
     });
 }
 

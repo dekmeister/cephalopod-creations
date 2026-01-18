@@ -284,23 +284,28 @@ function generateFeedingTentacles(sites) {
  * Generate a label for a tentacle
  */
 function generateLabel(tentacle) {
-    const { endX, endY, angle, title } = tentacle;
-    
+    const { endX, endY, angle, title, id } = tentacle;
+
     const labelOffset = 20;
     const labelX = endX + angle * labelOffset;
     const labelY = endY + 15;
-    
+
     // Rotate label to follow tentacle direction
     let rotation = angle * 40;
-    
+
     const textAnchor = Math.abs(angle) < 0.2 ? 'middle' :
                       (angle < 0 ? 'end' : 'start');
-    
+
     return `
-        <text x="${labelX}" y="${labelY}"
+        <text id="label-${id}"
+              x="${labelX}" y="${labelY}"
               class="tentacle-label"
               text-anchor="${textAnchor}"
-              transform="rotate(${rotation}, ${labelX}, ${labelY})">
+              transform="rotate(${rotation}, ${labelX}, ${labelY})"
+              data-site-id="${id}"
+              tabindex="0"
+              role="button"
+              aria-label="View ${title}">
             ${title}
         </text>
     `;
