@@ -46,22 +46,18 @@ body {
     height: auto;
 }
 
-/* Tentacle Styles */
+/* Tentacle Styles (filled tapered shapes) */
 .tentacle {
     cursor: pointer;
-    stroke: var(--tentacle-base);
-    stroke-width: 8;
-    fill: none;
-    stroke-linecap: round;
-    stroke-linejoin: round;
-    transition: filter var(--transition-speed) ease, stroke var(--transition-speed) ease;
+    fill: var(--tentacle-base);
+    stroke: none;
+    transition: filter var(--transition-speed) ease, fill var(--transition-speed) ease;
     transform-origin: center;
 }
 
 .tentacle:hover,
 .tentacle:focus {
-    filter: drop-shadow(0 0 12px var(--glow-color));
-    stroke: var(--glow-color);
+    filter: drop-shadow(0 0 12px var(--glow-color)) brightness(1.2);
     outline: none;
 }
 
@@ -97,6 +93,33 @@ body {
     fill: hsl(var(--cuttlefish-hue), 55%, 45%);
     opacity: 0.8;
     transition: fill 0.5s ease;
+}
+
+/* New body elements from improved graphics */
+.cuttlefish-head {
+    fill: hsl(var(--cuttlefish-hue), 50%, 40%);
+    transition: fill 0.5s ease;
+}
+
+.cuttlefish-stripe {
+    stroke: hsl(var(--cuttlefish-hue), 40%, 20%);
+    stroke-width: 2;
+    fill: none;
+    opacity: 0.4;
+}
+
+.cuttlefish-eye-outer {
+    fill: #f5f5dc;
+    stroke: hsl(var(--cuttlefish-hue), 40%, 25%);
+    stroke-width: 1.5;
+}
+
+.cuttlefish-eye-pupil {
+    fill: #1a1a2e;
+}
+
+.feeding-tentacle {
+    opacity: 0.9;
 }
 
 /* Animation Toggle Button */

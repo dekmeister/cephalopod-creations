@@ -6,64 +6,55 @@ const BODY_CENTER_X = 400;
 const BODY_CENTER_Y = 200;
 
 /**
- * Generate the undulating mantle fin that wraps around the entire body
+ * Generate the undulating mantle fin that wraps around the body
  */
 function generateMantleFin(phase = 0) {
-    const mantleWidth = 80;   // Narrow (horizontal)
-    const mantleHeight = 140; // Tall (vertical) - rotated 90°
-    const finAmplitude = 10;  // Gentler waves
-    const waveCount = 6;      // Fewer waves for smoother look
-
-    const points = 100;  // More points for smoother curves
-    const finPoints = [];
-
-    // Generate wavy outline around the ENTIRE mantle (full 360°)
+    const mantleWidth = 140;
+    const mantleHeight = 100;
+    const finAmplitude = 18;
+    const waveCount = 8;
+    
+    let pathD = '';
+    const points = 60;
+    
+    // Generate wavy outline around the mantle
     for (let i = 0; i <= points; i++) {
         const t = i / points;
-        const angle = t * Math.PI * 2;  // Full circle
-
-        // Base ellipse position (slightly larger than body)
-        const baseX = BODY_CENTER_X + Math.cos(angle) * (mantleWidth + 8);
-        const baseY = BODY_CENTER_Y + Math.sin(angle) * (mantleHeight + 8);
-
-        // Smooth sinusoidal wave displacement
+        const angle = Math.PI + t * Math.PI; // Bottom half arc (back of cuttlefish)
+        
+        // Base ellipse position
+        const baseX = BODY_CENTER_X + Math.cos(angle) * mantleWidth;
+        const baseY = BODY_CENTER_Y + Math.sin(angle) * mantleHeight * 0.7;
+        
+        // Add wave displacement outward from center
         const wave = Math.sin(t * waveCount * Math.PI * 2 + phase) * finAmplitude;
-
-        // Normal direction (outward from center)
         const normalX = Math.cos(angle);
-        const normalY = Math.sin(angle);
-
+        const normalY = Math.sin(angle) * 0.7;
+        
         const x = baseX + normalX * wave;
         const y = baseY + normalY * wave;
-
-        finPoints.push({ x, y });
+        
+        if (i === 0) {
+            pathD += `M ${x} ${y}`;
+        } else {
+            pathD += ` L ${x} ${y}`;
+        }
     }
-
-    // Build smooth path using quadratic curves for flowing appearance
-    let pathD = `M ${finPoints[0].x} ${finPoints[0].y}`;
-
-    for (let i = 1; i < finPoints.length; i++) {
-        const prev = finPoints[i - 1];
-        const curr = finPoints[i];
-        // Use midpoints as control points for smooth curves
-        const midX = (prev.x + curr.x) / 2;
-        const midY = (prev.y + curr.y) / 2;
-        pathD += ` Q ${prev.x} ${prev.y}, ${midX} ${midY}`;
-    }
-
+    
+    // Close back to start along the body edge
     pathD += ' Z';
-
+    
     return `<path d="${pathD}" class="cuttlefish-fin" />`;
 }
 
 /**
  * Generate the main mantle (body) of the cuttlefish
- * Elongated vertically (tall, not wide)
  */
 function generateMantle() {
-    const mantleWidth = 80;    // Narrow
-    const mantleHeight = 140;  // Tall - vertical orientation
-
+    const mantleWidth = 130;
+    const mantleHeight = 90;
+    
+    // Rounded rectangular mantle shape
     return `
         <ellipse cx="${BODY_CENTER_X}" cy="${BODY_CENTER_Y}"
                  rx="${mantleWidth}" ry="${mantleHeight}"
@@ -73,26 +64,16 @@ function generateMantle() {
 
 /**
  * Generate the head region (between mantle and arms)
- * Smooth organic shape that blends into the body
  */
 function generateHead() {
-    const headTop = BODY_CENTER_Y + 115;   // Overlap slightly with body for smooth blend
-    const headBottom = BODY_CENTER_Y + 185;
-    const headWidth = 55;
+    const headY = BODY_CENTER_Y + 100;
 
-    // Smooth curved head that tapers from body to arms
+    // Trapezoidal head connecting mantle to arms
     return `
-        <path d="M ${BODY_CENTER_X - headWidth} ${headTop}
-                 C ${BODY_CENTER_X - headWidth - 5} ${headTop + 30},
-                   ${BODY_CENTER_X - headWidth + 10} ${headBottom - 20},
-                   ${BODY_CENTER_X - 35} ${headBottom}
-                 Q ${BODY_CENTER_X} ${headBottom + 8},
-                   ${BODY_CENTER_X + 35} ${headBottom}
-                 C ${BODY_CENTER_X + headWidth - 10} ${headBottom - 20},
-                   ${BODY_CENTER_X + headWidth + 5} ${headTop + 30},
-                   ${BODY_CENTER_X + headWidth} ${headTop}
-                 Q ${BODY_CENTER_X} ${headTop - 10},
-                   ${BODY_CENTER_X - headWidth} ${headTop}
+        <path d="M ${BODY_CENTER_X - 90} ${BODY_CENTER_Y + 60}
+                 Q ${BODY_CENTER_X - 80} ${headY + 20}, ${BODY_CENTER_X - 50} ${headY + 40}
+                 L ${BODY_CENTER_X + 50} ${headY + 40}
+                 Q ${BODY_CENTER_X + 80} ${headY + 20}, ${BODY_CENTER_X + 90} ${BODY_CENTER_Y + 60}
                  Z"
               class="cuttlefish-head" />
     `;
@@ -102,9 +83,9 @@ function generateHead() {
  * Generate the prominent cuttlefish eyes
  */
 function generateEyes() {
-    const eyeY = BODY_CENTER_Y + 145;  // Positioned on the head
-    const eyeSpacing = 32;
-    const eyeRadius = 12;
+    const eyeY = BODY_CENTER_Y + 110;
+    const eyeSpacing = 55;
+    const eyeRadius = 18;
     
     return `
         <!-- Left eye -->
@@ -134,20 +115,20 @@ function generateEyes() {
  */
 function generateMantlePattern() {
     const stripes = [];
-    const stripeCount = 10;  // Fewer stripes for narrower body
-
+    const stripeCount = 12;
+    
     for (let i = 0; i < stripeCount; i++) {
-        const offset = (i - stripeCount/2) * 12;
-        const curve = Math.abs(offset) * 0.2;
-
+        const offset = (i - stripeCount/2) * 18;
+        const curve = Math.abs(offset) * 0.3;
+        
         stripes.push(`
-            <path d="M ${BODY_CENTER_X + offset} ${BODY_CENTER_Y - 120 + curve}
-                     Q ${BODY_CENTER_X + offset * 0.9} ${BODY_CENTER_Y},
-                       ${BODY_CENTER_X + offset * 0.8} ${BODY_CENTER_Y + 120 - curve}"
+            <path d="M ${BODY_CENTER_X + offset} ${BODY_CENTER_Y - 70 + curve}
+                     Q ${BODY_CENTER_X + offset * 0.8} ${BODY_CENTER_Y}, 
+                       ${BODY_CENTER_X + offset * 0.6} ${BODY_CENTER_Y + 60 - curve}"
                   class="cuttlefish-stripe" />
         `);
     }
-
+    
     return `<g class="mantle-pattern">${stripes.join('')}</g>`;
 }
 
@@ -156,20 +137,20 @@ function generateMantlePattern() {
  * Arms are the 8 shorter appendages
  */
 function generateArm(site, index, totalArms, isLongTentacle = false) {
-    const armBaseY = BODY_CENTER_Y + 185;  // Attach at bottom of head
-
+    const armBaseY = BODY_CENTER_Y + 145;
+    
     // Distribute arms in a fan pattern
-    const fanSpread = 70; // narrower spread to match narrower head
+    const fanSpread = 140; // total spread in pixels
     const spacing = fanSpread / (totalArms - 1 || 1);
     const baseX = BODY_CENTER_X - fanSpread/2 + index * spacing;
-
+    
     // Add slight variation
-    const variation = Math.sin(index * 1.7) * 5;
+    const variation = Math.sin(index * 1.7) * 8;
     const startX = baseX + variation;
-
-    // Arm properties - shorter arms
-    const length = isLongTentacle ? 120 + Math.random() * 20 : 80 + Math.random() * 30;
-    const baseWidth = isLongTentacle ? 6 : 10;
+    
+    // Arm properties
+    const length = isLongTentacle ? 220 + Math.random() * 30 : 140 + Math.random() * 40;
+    const baseWidth = isLongTentacle ? 8 : 12;
     const tipWidth = 2;
     
     // Calculate curve direction (fan outward)
@@ -218,21 +199,21 @@ function generateArm(site, index, totalArms, isLongTentacle = false) {
  */
 function generateFeedingTentacles(sites) {
     if (sites.length < 2) return { paths: [], labels: [] };
-
+    
     const tentacles = [];
-    const armBaseY = BODY_CENTER_Y + 185;  // Attach at bottom of head
-
+    const armBaseY = BODY_CENTER_Y + 145;
+    
     // Two long tentacles, positioned among the arms
     const positions = [
-        { x: BODY_CENTER_X - 20, angle: -0.25 },
-        { x: BODY_CENTER_X + 20, angle: 0.25 }
+        { x: BODY_CENTER_X - 30, angle: -0.3 },
+        { x: BODY_CENTER_X + 30, angle: 0.3 }
     ];
-
+    
     positions.forEach((pos, i) => {
         if (i >= sites.length) return;
-
+        
         const site = sites[i];
-        const length = 120 + Math.random() * 30;  // Shorter tentacles
+        const length = 200 + Math.random() * 40;
         const endX = pos.x + pos.angle * length;
         const endY = armBaseY + length;
         
