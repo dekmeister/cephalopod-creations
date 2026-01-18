@@ -1,4 +1,4 @@
-# Cuttlefish Index — Development Guide
+# Cephalopod Creations — Development Guide
 
 ## Project Overview
 
