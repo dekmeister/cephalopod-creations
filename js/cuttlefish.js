@@ -156,7 +156,7 @@ function generateMantlePattern() {
  * Arms are the 8 shorter appendages
  */
 function generateArm(site, index, totalArms, isLongTentacle = false) {
-    const armBaseY = BODY_CENTER_Y + 185;  // Attach at bottom of head
+    const armBaseY = BODY_CENTER_Y + 170;  // Attach at actual bottom of head curve
 
     // Distribute arms in a fan pattern
     const fanSpread = 70; // narrower spread to match narrower head
@@ -220,7 +220,7 @@ function generateFeedingTentacles(sites) {
     if (sites.length < 2) return { paths: [], labels: [] };
 
     const tentacles = [];
-    const armBaseY = BODY_CENTER_Y + 185;  // Attach at bottom of head
+    const armBaseY = BODY_CENTER_Y + 185;  // Attach at actual bottom of head curve
 
     // Two long tentacles, positioned among the arms
     const positions = [
