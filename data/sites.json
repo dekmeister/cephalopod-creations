@@ -1,0 +1,35 @@
+{
+    "settings": {
+        "animationEnabled": true
+    },
+    "sites": [
+        {
+            "id": "wikipedia",
+            "title": "Wikipedia",
+            "url": "https://www.wikipedia.org",
+            "description": "The free encyclopedia that anyone can edit. A vast repository of human knowledge covering millions of topics in hundreds of languages.",
+            "colour": "#3498db"
+        },
+        {
+            "id": "github",
+            "title": "GitHub",
+            "url": "https://github.com",
+            "description": "The world's leading platform for software development and version control. Where developers collaborate, share code, and build amazing things together.",
+            "colour": "#9b59b6"
+        },
+        {
+            "id": "mdn",
+            "title": "MDN Web Docs",
+            "url": "https://developer.mozilla.org",
+            "description": "Comprehensive web development documentation and learning resources. Your go-to reference for HTML, CSS, JavaScript, and web APIs.",
+            "colour": "#e74c3c"
+        },
+        {
+            "id": "stackoverflow",
+            "title": "Stack Overflow",
+            "url": "https://stackoverflow.com",
+            "description": "The largest online community for programmers to learn, share knowledge, and build their careers. Get answers to your coding questions.",
+            "colour": "#f39c12"
+        }
+    ]
+}

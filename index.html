@@ -1,0 +1,32 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="description" content="An interactive cuttlefish link directory">
+    <title>Cuttlefish Index</title>
+    <link rel="stylesheet" href="css/styles.css">
+</head>
+<body>
+    <div id="cuttlefish-container">
+        <div class="loading">Loading cuttlefish...</div>
+    </div>
+
+    <button id="animation-toggle" class="toggle-button" aria-label="Toggle animations">
+        <span class="toggle-icon">⏸</span>
+    </button>
+
+    <!-- Modal structure -->
+    <div class="modal-overlay" id="modal" hidden>
+        <div class="modal-content">
+            <button class="modal-close" aria-label="Close modal">×</button>
+            <h2 class="modal-title"></h2>
+            <p class="modal-description"></p>
+            <a class="modal-link" href="#" target="_blank" rel="noopener noreferrer">Visit Site →</a>
+        </div>
+    </div>
+
+    <!-- Load JavaScript modules -->
+    <script type="module" src="js/main.js"></script>
+</body>
+</html>
