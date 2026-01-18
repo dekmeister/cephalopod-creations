@@ -6,11 +6,12 @@ An interactive, animated link directory visualized as a cuttlefish with tentacle
 
 **Key Features:**
 - Programmatically generated SVG cuttlefish
-- Interactive tentacles with hover effects
+- Interactive tentacles and labels with hover effects
 - Modal dialogs for site information
-- Organic colour shifting and wave animations
+- List view for plaintext site directory
+- Organic colour shifting, wave, and fin animations
 - Full accessibility (WCAG 2.1 AA compliant)
-- Responsive design
+- Mobile responsive design with viewport optimization
 
 ## Architecture
 
@@ -29,7 +30,8 @@ js/
 ├── cuttlefish.js    # SVG generation (body, tentacles, labels)
 ├── data-loader.js   # Fetch and validate sites.json
 ├── modal.js         # Modal dialog functionality
-└── animation.js     # Animation controls and colour shifting
+├── animation.js     # Animation controls and colour shifting
+└── list-view.js     # List view toggle and population
 ```
 
 ## Development Server
@@ -117,17 +119,18 @@ The application automatically:
 1. Load and validate sites.json
 2. Generate SVG cuttlefish
 3. Initialize modal event listeners
-4. Attach click handlers to tentacles
-5. Start animation controls
-6. Handle errors gracefully
+4. Attach click handlers to tentacles and labels
+5. Initialize list view toggle
+6. Start animation controls
+7. Handle errors gracefully
 ```
 
 ### SVG Generation: `js/cuttlefish.js`
 
 **Key Functions:**
-- `generateBody()` - Creates mantle, fins, eyes
+- `generateBody()` - Creates mantle, animated fins, eyes
 - `generateTentacle(site, index, total)` - Bézier curve paths
-- `generateLabel(tentacle)` - Rotated text labels
+- `generateLabel(tentacle, site)` - Rotated clickable text labels
 - `generateCuttlefish(container, sites)` - Assembles complete SVG
 
 **Tentacle Algorithm:**
@@ -135,6 +138,12 @@ The application automatically:
 - Adds organic variation using sine-based noise
 - Creates S-curves with cubic Bézier control points
 - Applies per-site colors from JSON
+- Labels are interactive and trigger same modal as tentacles
+
+**Responsive Scaling:**
+- Adjusts viewBox dimensions based on viewport
+- Mobile viewports use smaller, optimized layout
+- Desktop viewports use full-size layout
 
 ### Modal System: `js/modal.js`
 
@@ -147,7 +156,7 @@ The application automatically:
 
 ### Animation System: `js/animation.js`
 
-**Two Animation Types:**
+**Three Animation Types:**
 
 1. **CSS Animations** (tentacle waves)
    - Defined in `css/styles.css`
@@ -159,10 +168,24 @@ The application automatically:
    - Runs on 100ms interval
    - Smoothly cycles through HSL spectrum
 
+3. **SVG Fin Animation**
+   - Programmatically animates fin `d` attribute
+   - Creates organic waving motion
+   - Pauses when modal opens or animations disabled
+
 **Toggle Button:**
 - Shows ⏸ (pause) when animations enabled
 - Shows ▶ (play) when disabled
 - Respects `prefers-reduced-motion` media query
+
+### List View System: `js/list-view.js`
+
+**Features:**
+- Alternative plaintext view of all sites
+- Accessible via toggle button (☰)
+- Focus management and keyboard navigation
+- Close via X button, Escape key, or overlay click
+- Displays titles, descriptions, and direct links
 
 ## Customization Guide
 
@@ -234,25 +257,31 @@ Interactive features:
 - [ ] Tentacles render (correct count matches sites.json)
 - [ ] Hover shows glow effect
 - [ ] Hover pauses individual tentacle animation
-- [ ] Click opens modal with correct site data
+- [ ] Click tentacle opens modal with correct site data
+- [ ] Click label opens modal with same site data
 - [ ] Modal displays title, description, link
 - [ ] Modal close: X button works
 - [ ] Modal close: click overlay works
 - [ ] Modal close: Escape key works
 - [ ] Animation toggle button changes icon
 - [ ] Animations pause/resume when toggled
+- [ ] List view toggle opens/closes plaintext directory
+- [ ] List view displays all sites correctly
+- [ ] Fin animation is visible and smooth
 
 Keyboard navigation:
-- [ ] Tab navigates between tentacles
-- [ ] Enter/Space opens modal from tentacle
+- [ ] Tab navigates between tentacles and labels
+- [ ] Enter/Space opens modal from tentacle or label
 - [ ] Tab cycles through modal elements
 - [ ] Shift+Tab cycles backward in modal
-- [ ] Focus returns to tentacle after modal closes
+- [ ] Focus returns to triggering element after modal closes
+- [ ] List view closes with Escape key
 - [ ] Visible focus indicators present
 
 Responsive/Accessibility:
 - [ ] Resize window - SVG scales proportionally
-- [ ] Mobile viewport - layout works
+- [ ] Mobile viewport - layout adapts correctly
+- [ ] NoScript popup displays when JavaScript disabled
 - [ ] Enable OS reduced motion - animations disabled
 - [ ] Screen reader - ARIA labels present
 - [ ] High contrast mode - elements visible
@@ -391,13 +420,14 @@ python3 -m http.server 8080
 
 | File | Purpose | Key Exports/Elements |
 |------|---------|---------------------|
-| `index.html` | HTML shell | `#cuttlefish-container`, `#modal`, `#animation-toggle` |
-| `css/styles.css` | All styling | CSS custom properties, animations, responsive |
+| `index.html` | HTML shell | `#cuttlefish-container`, `#modal`, `#animation-toggle`, `#list-toggle`, `#list-view` |
+| `css/styles.css` | All styling | CSS custom properties, animations, responsive, mobile viewports |
 | `js/main.js` | Entry point | `init()`, `attachTentacleHandlers()` |
-| `js/cuttlefish.js` | SVG generation | `generateCuttlefish()` |
+| `js/cuttlefish.js` | SVG generation | `generateCuttlefish()`, responsive viewBox |
 | `js/data-loader.js` | Data loading | `loadSites()` |
 | `js/modal.js` | Modal system | `initModal()`, `openModal()`, `closeModal()` |
-| `js/animation.js` | Animations | `initAnimation()`, colour shifting |
+| `js/animation.js` | Animations | `initAnimation()`, colour shifting, fin animation |
+| `js/list-view.js` | List view | `initListView()`, `populateListView()` |
 | `data/sites.json` | Site data | Configuration object |
 
 ## Quick Reference Commands

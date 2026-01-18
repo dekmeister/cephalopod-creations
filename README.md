@@ -6,11 +6,12 @@ An interactive, animated link directory visualized as a cuttlefish with tentacle
 
 ## Features
 
-- **Interactive Tentacles**: Each tentacle links to a different website
-- **Smooth Animations**: Organic wave motion and colour shifting
-- **Modal Dialogs**: Click tentacles to view site details before navigating
+- **Interactive Tentacles**: Each tentacle and label link to a different website
+- **Smooth Animations**: Organic wave motion, fin animations, and colour shifting
+- **Modal Dialogs**: Click tentacles or labels to view site details before navigating
+- **List View**: Alternative plaintext view for quick access to all sites
 - **Fully Accessible**: Keyboard navigation, screen reader support, focus management
-- **Responsive Design**: Scales beautifully on all screen sizes
+- **Mobile Responsive**: Optimized layouts for mobile and desktop viewports
 - **Animation Controls**: Toggle animations on/off with a button
 - **Vanilla JavaScript**: No frameworks or build tools required
 
@@ -111,7 +112,8 @@ cephalopod-creations/
 │   ├── cuttlefish.js   # SVG generation for body and tentacles
 │   ├── data-loader.js  # Fetches and validates sites.json
 │   ├── modal.js        # Modal open/close/populate logic
-│   └── animation.js    # Animation and colour shifting controls
+│   ├── animation.js    # Animation and colour shifting controls
+│   └── list-view.js    # List view toggle and population
 ├── data/
 │   └── sites.json      # Website definitions
 └── README.md           # This file
@@ -174,9 +176,14 @@ Requires ES6 module support and modern CSS features.
 | Key | Action |
 |-----|--------|
 | `Tab` | Navigate between tentacles |
-| `Enter` or `Space` | Open modal for focused tentacle |
-| `Escape` | Close modal |
-| `Tab` (in modal) | Cycle through modal controls |
+| `Enter` or `Space` | Open modal for focused tentacle or label |
+| `Escape` | Close modal or list view |
+| `Tab` (in modal/list) | Cycle through controls |
+
+### UI Controls
+
+- **Animation Toggle** (⏸/▶): Bottom-right corner, toggles all animations
+- **List View Toggle** (☰): Bottom-right corner (above animation toggle), shows plaintext site directory
 
 ## Troubleshooting
 
@@ -242,10 +249,13 @@ html5validator --root . --also-check-css
 
 - [ ] Cuttlefish renders with correct number of tentacles
 - [ ] Hover shows glow effect and pauses animation
-- [ ] Click opens modal with correct site info
+- [ ] Click tentacle or label opens modal with correct site info
 - [ ] Modal closes: X button, click outside, Escape key
 - [ ] Animation toggle button works
+- [ ] List view toggle opens/closes plaintext directory
+- [ ] List view shows all sites with clickable links
 - [ ] Keyboard navigation works (Tab, Enter, Space)
+- [ ] Mobile: layout adapts correctly on small screens
 - [ ] Responsive: resize window, cuttlefish scales
 - [ ] Reduced motion: enable in OS, animations stop
 
