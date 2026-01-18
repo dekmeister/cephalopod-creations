@@ -3,6 +3,7 @@ import { loadSites } from './data-loader.js';
 import { generateCuttlefish } from './cuttlefish.js';
 import { initModal, openModal } from './modal.js';
 import { initAnimation } from './animation.js';
+import { populateListView, initListView } from './list-view.js';
 
 /**
  * Attach click handlers to tentacles and their labels
@@ -62,6 +63,10 @@ async function init() {
 
         // Initialize animation controls
         initAnimation(data.settings.animationEnabled);
+
+        // Populate and initialize list view
+        populateListView(data.sites);
+        initListView();
 
     } catch (error) {
         console.error('Failed to initialize application:', error);
