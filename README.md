@@ -1,8 +1,8 @@
-# Cuttlefish Index
+# Cephalopod Creations
 
 An interactive, animated link directory visualized as a cuttlefish with tentacles. Each tentacle represents a website and is clickable to view more information.
 
-![Cuttlefish Index Demo](screenshot.png)
+![Cephalopod Creations Demo](screenshot.png)
 
 ## Features
 
@@ -22,7 +22,7 @@ This project requires a local HTTP server because it uses `fetch()` to load data
 
 ```bash
 # Navigate to project directory
-cd cuttlefish-index
+cd cephalopod-creations
 
 # Start Python HTTP server
 python3 -m http.server 8000
@@ -102,7 +102,7 @@ All website data is stored in `data/sites.json`. Edit this file to customize you
 ## Project Structure
 
 ```
-cuttlefish-index/
+cephalopod-creations/
 ├── index.html          # Main HTML shell
 ├── css/
 │   └── styles.css      # All styling including animations
