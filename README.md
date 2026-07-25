@@ -49,7 +49,7 @@ Press `Ctrl+C` in the terminal to stop the server.
 
 ## Adding/Editing Sites
 
-All website data is stored in `data/sites.json`. Edit this file to customize your cuttlefish.
+All website data is stored in `data/sites.json`. This file is gitignored (it's meant to hold your own, potentially personal, site list) — copy `data/sites.example.json` to `data/sites.json` to get started, then edit it to customize your cuttlefish.
 
 ### JSON Structure
 
@@ -115,7 +115,8 @@ cephalopod-creations/
 │   ├── animation.js    # Animation and colour shifting controls
 │   └── list-view.js    # List view toggle and population
 ├── data/
-│   └── sites.json      # Website definitions
+│   ├── sites.json          # Website definitions (gitignored, your own data)
+│   └── sites.example.json  # Template to copy as data/sites.json
 └── README.md           # This file
 ```
 

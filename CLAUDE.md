@@ -71,7 +71,7 @@ python3 -m http.server 8080
 
 ## Data Configuration
 
-All website data is in `data/sites.json`. This file controls which tentacles appear and their properties.
+All website data is in `data/sites.json`. This file controls which tentacles appear and their properties. It is gitignored since it holds the real (potentially personal) site list — `data/sites.example.json` is the committed template; copy it to `data/sites.json` to start.
 
 ### JSON Schema
 
@@ -428,7 +428,8 @@ python3 -m http.server 8080
 | `js/modal.js` | Modal system | `initModal()`, `openModal()`, `closeModal()` |
 | `js/animation.js` | Animations | `initAnimation()`, colour shifting, fin animation |
 | `js/list-view.js` | List view | `initListView()`, `populateListView()` |
-| `data/sites.json` | Site data | Configuration object |
+| `data/sites.json` | Site data (gitignored, real data) | Configuration object |
+| `data/sites.example.json` | Site data template (committed) | Configuration object |
 
 ## Quick Reference Commands
 
